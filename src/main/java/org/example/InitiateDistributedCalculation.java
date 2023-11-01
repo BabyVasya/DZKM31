@@ -21,7 +21,9 @@ public class InitiateDistributedCalculation extends Behaviour {
     private boolean receivedFlag;
     private List<ACLMessage> responseList = new ArrayList<>();
 
-    private MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CONFIRM);
+    private MessageTemplate mt1 = MessageTemplate.MatchPerformative(ACLMessage.CONFIRM);
+
+
 
     public InitiateDistributedCalculation(double x, double d) {
         this.x = x;
@@ -63,10 +65,12 @@ public class InitiateDistributedCalculation extends Behaviour {
 
             if (maxArgs.equals("x-d")) {
                 x = x - d;
+                d = d/2;
                 nextQueue(x, d);
             }
             if (maxArgs.equals("x+d")) {
                 x = x + d;
+                d = d/2;
                 nextQueue(x, d);
             }
             if (maxArgs.equals("x")) {
@@ -104,11 +108,12 @@ public class InitiateDistributedCalculation extends Behaviour {
     }
 
     private void calcConfirm() {
-        ACLMessage receiveCalculations = getAgent().receive(mt);
+        ACLMessage receiveCalculations = getAgent().receive(mt1);
         if(receiveCalculations != null) {
             responseList.add(receiveCalculations);
         }
         if(responseList.size() == 3) {
+            System.out.println("Проверка полученного "+responseList.get(0).toString() + responseList.get(1).toString() + responseList.get(2).toString());
             receivedFlag = true;
         }
     }

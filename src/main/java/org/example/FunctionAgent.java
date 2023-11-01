@@ -8,6 +8,6 @@ public class FunctionAgent extends Agent {
     @Override
     protected void setup() {
         addBehaviour(new CatchInitiative());
-        addBehaviour(new CalcMyFunction(Functions.agent1Function(), Functions.agent2Function(), Functions.agent3Function()));
+        addBehaviour(new CalcMyFunction());
     }
 }
