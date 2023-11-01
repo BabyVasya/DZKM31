@@ -1,0 +1,11 @@
+package org.example;
+
+import jade.core.Agent;
+
+public class FunctionAgent3 extends Agent {
+    @Override
+    protected void setup() {
+        addBehaviour(new CatchInitiative());
+        addBehaviour(new CalcMyFunction3());
+    }
+}
