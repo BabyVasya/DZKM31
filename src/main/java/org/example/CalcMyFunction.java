@@ -5,7 +5,6 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-import java.util.function.Function;
 
 public class CalcMyFunction extends Behaviour {
 
