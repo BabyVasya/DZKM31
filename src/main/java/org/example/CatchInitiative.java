@@ -10,29 +10,31 @@ public class CatchInitiative extends Behaviour {
 
     @Override
     public void action() {
+        start();
         MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
         ACLMessage receiveQueue = getAgent().receive(mt);
+        String senderName = receiveQueue != null ? receiveQueue.getSender().getLocalName() : null;
+        nonStartIterate(receiveQueue, senderName);
+    }
+
+
+
+    private void start() {
         if (!iteration1 && myAgent.getLocalName().equals("Agent1")) {
-            myAgent.addBehaviour(new InitiateDistributedCalculation( Math.random(), 4));
+            myAgent.addBehaviour(new InitiateDistributedCalculation(Math.random(), 4));
             iteration1 = true;
-        }
-        if(receiveQueue != null && receiveQueue.getSender().getLocalName().equals("Agent1")) {
-            String[] xd = receiveQueue.getContent().split(" ");
-            getAgent().addBehaviour(new InitiateDistributedCalculation(Double.parseDouble(xd[0]), Double.parseDouble(xd[1])));
-            System.out.println("Очередь передана от " + receiveQueue.getSender().getLocalName() + " к " + myAgent.getLocalName() + " " +receiveQueue);
-        }
-        if(receiveQueue != null && receiveQueue.getSender().getLocalName().equals("Agent2") ) {
-            String[] xd = receiveQueue.getContent().split(" ");
-            getAgent().addBehaviour(new InitiateDistributedCalculation(Double.parseDouble(xd[0]), Double.parseDouble(xd[1])));
-            System.out.println("Очередь передана от " + receiveQueue.getSender().getLocalName() + " к " + myAgent.getLocalName() + " " +receiveQueue);
-        }
-        if(receiveQueue != null && receiveQueue.getSender().getLocalName().equals("Agent3") ) {
-            String[] xd = receiveQueue.getContent().split(" ");
-            getAgent().addBehaviour(new InitiateDistributedCalculation(Double.parseDouble(xd[0]), Double.parseDouble(xd[1])));
-            System.out.println("Очередь передана от " + receiveQueue.getSender().getLocalName() + " к " + myAgent.getLocalName() + " " +receiveQueue);
         }
     }
 
+    private void nonStartIterate (ACLMessage receiveQueue, String senderName) {
+        for (String agentName : agents) {
+            if (receiveQueue != null && senderName.equals(agentName)) {
+                String[] xd = receiveQueue.getContent().split(" ");
+                getAgent().addBehaviour(new InitiateDistributedCalculation(Double.parseDouble(xd[0]), Double.parseDouble(xd[1])));
+                System.out.println("Очередь передана от " + senderName + " к " + myAgent.getLocalName() + " " + receiveQueue);
+            }
+        }
+    }
 
     @Override
     public boolean done() {

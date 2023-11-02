@@ -23,52 +23,26 @@ public class CalcMyFunction extends Behaviour {
             responseMsg1.setContent(Functions.agent1Function(x) + " " + Functions.agent1Function(x+d) + " " + Functions.agent1Function(x-d));
             responseMsg2.setContent(Functions.agent2Function(x) + " " + Functions.agent2Function(x+d) + " " + Functions.agent2Function(x-d));
             responseMsg3.setContent(Functions.agent3Function(x) + " " + Functions.agent3Function(x+d) + " " + Functions.agent3Function(x-d));
-            if(receiveRequest1.getSender().getLocalName().equals("Agent1")) {
-                if (myAgent.getLocalName().equals("Agent1")) {
-                    responseMsg1.addReceiver(new AID("Agent1", false));
-                    getAgent().send(responseMsg1);
-                }
-                if (myAgent.getLocalName().equals("Agent2")) {
-                    responseMsg2.addReceiver(new AID("Agent1", false));
-                    getAgent().send(responseMsg2);
-                }
-                if (myAgent.getLocalName().equals("Agent3")) {
-                    responseMsg3.addReceiver(new AID("Agent1", false));
-                    getAgent().send(responseMsg3);
-                }
+            calcForAgent("Agent1", receiveRequest1, responseMsg1, responseMsg2, responseMsg3);
+            calcForAgent("Agent2", receiveRequest1, responseMsg1, responseMsg2, responseMsg3);
+            calcForAgent("Agent3", receiveRequest1, responseMsg1, responseMsg2, responseMsg3);
+        }
+    }
+
+    private void calcForAgent (String senderName, ACLMessage receiveRequest1, ACLMessage responseMsg1, ACLMessage responseMsg2, ACLMessage responseMsg3) {
+        if(receiveRequest1.getSender().getLocalName().equals(senderName)) {
+            if (myAgent.getLocalName().equals("Agent1")) {
+                responseMsg1.addReceiver(new AID(senderName, false));
+                getAgent().send(responseMsg1);
             }
-            if(receiveRequest1.getSender().getLocalName().equals("Agent2")) {
-                if (myAgent.getLocalName().equals("Agent1")) {
-                    responseMsg1.addReceiver(new AID("Agent2", false));
-                    getAgent().send(responseMsg1);
-                }
-                if (myAgent.getLocalName().equals("Agent2")) {
-                    responseMsg2.addReceiver(new AID("Agent2", false));
-                    getAgent().send(responseMsg2);
-                }
-                if (myAgent.getLocalName().equals("Agent3")) {
-                    responseMsg3.addReceiver(new AID("Agent2", false));
-                    getAgent().send(responseMsg3);
-                }
+            if (myAgent.getLocalName().equals("Agent2")) {
+                responseMsg2.addReceiver(new AID(senderName, false));
+                getAgent().send(responseMsg2);
             }
-            if(receiveRequest1.getSender().getLocalName().equals("Agent3")) {
-                if (myAgent.getLocalName().equals("Agent1")) {
-                    responseMsg1.addReceiver(new AID("Agent3", false));
-                    getAgent().send(responseMsg1);
-                }
-                if (myAgent.getLocalName().equals("Agent2")) {
-                    responseMsg2.addReceiver(new AID("Agent3", false));
-                    getAgent().send(responseMsg2);
-                }
-                if (myAgent.getLocalName().equals("Agent3")) {
-                    responseMsg3.addReceiver(new AID("Agent3", false));
-                    getAgent().send(responseMsg3);
-                }
+            if (myAgent.getLocalName().equals("Agent3")) {
+                responseMsg3.addReceiver(new AID(senderName, false));
+                getAgent().send(responseMsg3);
             }
-
-
-
-
         }
     }
     @Override
